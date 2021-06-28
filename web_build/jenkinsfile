@@ -1,0 +1,29 @@
+pipeline{
+    agent any
+    tools {
+    maven 'maven3'
+    }
+    stages{
+        stage('SCM'){
+            steps{
+                git credentialsId: 'github',
+                url: 'https://github.com/shvkmr536/dockeransiblejenkins.git'
+                    
+            }
+        }
+        
+        stage('Maven Build'){
+            steps{
+                sh "mvn clean package"
+            }
+        }
+          stage('Deployment'){
+            steps{
+                sshagent(['ansible']) {
+                sh 'ssh vagrant@192.168.0.104 "./tomcat.sh"'
+                 }
+            }
+        }
+     
+    }
+}

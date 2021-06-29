@@ -20,7 +20,7 @@ pipeline{
           stage('Deployment'){
             steps{
                 sshagent(['ansible']) {
-                sh 'ssh vagrant@192.168.0.101 "./tomcat.sh"'
+                sh 'ssh vagrant@192.168.0.102 "./tomcat.sh"'
                  }
             }
         }

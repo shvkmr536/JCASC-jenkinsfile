@@ -1,0 +1,29 @@
+pipeline{
+    agent any
+    tools {
+    maven 'maven3'
+    }
+    stages{
+        stage('SCM Checkout'){
+            steps{
+                git credentialsId: 'github',
+                url: 'https://github.com/shvkmr536/application_repo.git'
+                    
+            }
+        }
+        
+        stage('Maven Build'){
+            steps{
+                sh "mvn clean package"
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+           steps{
+              withSonarQubeEnv('sonar') { 
+              sh "mvn sonar:sonar"
+            }
+        }
+    }
+  }
+}
